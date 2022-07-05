@@ -7,4 +7,6 @@ public interface MenuGroupRepository {
     MenuGroup save(MenuGroup menuGroup);
 
     Optional<MenuGroup> findById(UUID id);
+
+    boolean existById(UUID id);
 }

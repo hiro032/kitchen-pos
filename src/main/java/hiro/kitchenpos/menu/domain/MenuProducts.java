@@ -1,6 +1,7 @@
 package hiro.kitchenpos.menu.domain;
 
 import hiro.kitchenpos.menu.domain.exception.MenuProductsEmptyException;
+import javax.persistence.CascadeType;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ import java.util.List;
 @Embeddable
 public class MenuProducts {
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "menu_id")
     private List<MenuProduct> products = new ArrayList<>();
 
