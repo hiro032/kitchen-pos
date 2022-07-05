@@ -1,6 +1,6 @@
-package hiro.kitchenpos.menu.domain;
+package hiro.kitchenpos.menugroup.domain;
 
-import hiro.kitchenpos.menu.domain.exception.MenuGroupNameException;
+import hiro.kitchenpos.menugroup.domain.exception.MenuGroupNameException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,12 +31,18 @@ public class MenuGroup {
         this.name = name;
     }
 
-    private void validateMenuGroupName(String name) {
+    private void validateMenuGroupName(final String name) {
         if (Objects.isNull(name)) {
             throw new MenuGroupNameException();
         }
         if (name.isBlank()) {
             throw new MenuGroupNameException();
         }
+    }
+
+    public void changeMenuGroupName(final String changeName) {
+        validateMenuGroupName(changeName);
+
+        this.name = changeName;
     }
 }

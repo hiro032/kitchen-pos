@@ -1,4 +1,4 @@
-package hiro.kitchenpos.menu.domain.exception;
+package hiro.kitchenpos.menugroup.domain.exception;
 
 import hiro.kitchenpos.global.error.BusinessException;
 import org.springframework.http.HttpStatus;

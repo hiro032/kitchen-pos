@@ -1,6 +1,7 @@
 package hiro.kitchenpos.menu.domain;
 
-import hiro.kitchenpos.menu.domain.exception.MenuGroupNameException;
+import hiro.kitchenpos.menugroup.domain.MenuGroup;
+import hiro.kitchenpos.menugroup.domain.exception.MenuGroupNameException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.NullAndEmptySource;
