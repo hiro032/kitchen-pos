@@ -6,10 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.UUID;
 
@@ -23,18 +20,20 @@ public class Product {
     @Id
     private UUID id;
 
+    @Embedded
     @Column(name = "name", nullable = false)
-    private String name;
+    private ProductName name;
 
+    @Embedded
     @Column(name = "price", nullable = false)
-    private BigDecimal price;
+    private ProductPrice price;
 
     public Product(final String name, final BigDecimal price, final PurgomalumClient client) {
         validateName(name, client);
         validatePrice(price);
         this.id = UUID.randomUUID();
-        this.name = name;
-        this.price = price;
+        this.name = new ProductName(name);
+        this.price = new ProductPrice(price);
     }
 
     private void validatePrice(BigDecimal price) {
@@ -51,11 +50,11 @@ public class Product {
 
     public void changePrice(final BigDecimal changePrice) {
         validatePrice(changePrice);
-        this.price = changePrice;
+        this.price = new ProductPrice(changePrice);
     }
 
     public void changeName(final String changeName, final PurgomalumClient client) {
         validateName(changeName, client);
-        this.name = changeName;
+        this.name = new ProductName(changeName);
     }
 }

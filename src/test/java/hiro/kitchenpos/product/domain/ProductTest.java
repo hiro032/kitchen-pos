@@ -41,13 +41,16 @@ class ProductTest {
     @DisplayName("상품의 가격을 변경할 수 있다.")
     @Test
     void change_product_price() {
+        // Arrange
         Product product = new Product("치킨", BigDecimal.valueOf(20000), new InmemoryPurgomalumClient());
 
         BigDecimal changePrice = BigDecimal.valueOf(10000);
 
+        // Act
         product.changePrice(changePrice);
 
-        assertThat(product.getPrice()).isEqualTo(changePrice);
+        // Assert
+        assertThat(product.getPrice()).isEqualTo(new ProductPrice(changePrice));
     }
 
     @DisplayName("변경하려는 상품의 가격이 0 보다 적은 금액이라면 예외가 발생한다.")
@@ -65,11 +68,14 @@ class ProductTest {
     @DisplayName("상품의 이름을 변경할 수 있다.")
     @Test
     void change_product_name() {
+        // Arrange
         Product product = new Product("치킨", BigDecimal.valueOf(20000), new InmemoryPurgomalumClient());
 
+        // Act
         product.changeName("양념 치킨", new InmemoryPurgomalumClient());
 
-        assertThat(product.getName()).isEqualTo("양념 치킨");
+        // Assert
+        assertThat(product.getName()).isEqualTo(new ProductName("양념 치킨"));
     }
 
     @DisplayName("변경하려는 상품 이름에 비속어가 포함된 경우 예외가 발생한다.")
