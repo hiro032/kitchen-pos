@@ -1,5 +1,6 @@
 package hiro.kitchenpos.product.application;
 
+import hiro.kitchenpos.product.application.dtos.ChangeProductInfo;
 import hiro.kitchenpos.product.domain.Product;
 import hiro.kitchenpos.product.domain.ProductRepository;
 import hiro.kitchenpos.product.domain.PurgomalumClient;
@@ -21,5 +22,15 @@ public class ProductService {
         Product entity = productRepository.save(product);
 
         return entity.getId();
+    }
+
+    public ChangeProductInfo change(UUID id, String name, BigDecimal price) {
+        Product product = productRepository.findById(id)
+                .orElseThrow();
+
+        product.changeName(name, purgomalumClient);
+        product.changePrice(price);
+
+        return ChangeProductInfo.fromEntity(product);
     }
 }

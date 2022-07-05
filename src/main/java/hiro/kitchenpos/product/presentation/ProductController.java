@@ -1,13 +1,13 @@
 package hiro.kitchenpos.product.presentation;
 
 import hiro.kitchenpos.product.application.ProductService;
+import hiro.kitchenpos.product.application.dtos.ChangeProductInfo;
+import hiro.kitchenpos.product.presentation.dtos.ChangeProductRequest;
+import hiro.kitchenpos.product.presentation.dtos.ChangeProductResponse;
 import hiro.kitchenpos.product.presentation.dtos.CreateProductRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -25,5 +25,12 @@ public class ProductController {
         UUID id = productService.create(request.getName(), request.getPrice());
 
         return ResponseEntity.created(URI.create("/api/products/" + id)).build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ChangeProductResponse> changeProductInfo(@RequestBody @Valid final ChangeProductRequest request, @PathVariable final UUID id) {
+        ChangeProductInfo productInfo = productService.change(id, request.getName(), request.getPrice());
+
+        return ResponseEntity.ok(ChangeProductResponse.fromProductInfo(productInfo));
     }
 }
