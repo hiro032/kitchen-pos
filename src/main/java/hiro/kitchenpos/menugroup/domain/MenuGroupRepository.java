@@ -8,5 +8,5 @@ public interface MenuGroupRepository {
 
     Optional<MenuGroup> findById(UUID id);
 
-    boolean existById(UUID id);
+    boolean existsById(UUID id);
 }

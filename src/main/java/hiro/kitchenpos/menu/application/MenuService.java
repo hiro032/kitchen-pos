@@ -5,15 +5,20 @@ import hiro.kitchenpos.menu.application.dtos.CreateMenuProductCommand;
 import hiro.kitchenpos.menu.domain.Menu;
 import hiro.kitchenpos.menu.domain.MenuProduct;
 import hiro.kitchenpos.menu.domain.MenuRepository;
+import hiro.kitchenpos.menu.domain.exception.MenuPriceOverThanProductsPriceException;
 import hiro.kitchenpos.menugroup.domain.MenuGroupRepository;
+import hiro.kitchenpos.menugroup.exception.MenuGroupNotFoundException;
 import hiro.kitchenpos.product.domain.Product;
 import hiro.kitchenpos.product.domain.ProductRepository;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import hiro.kitchenpos.product.domain.exception.ProductNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional
@@ -25,14 +30,10 @@ public class MenuService {
     private final ProductRepository productRepository;
 
     public UUID create(final CreateMenuCommand command) {
-        List<UUID> productIds = command.getCreateMenuProductCommands().stream()
-                .map(CreateMenuProductCommand::getProductId)
-                .collect(Collectors.toList());
 
-        List<Product> products = productRepository.findAllByIdIn(productIds);
-
-        validateProductIds(command.getCreateMenuProductCommands(), products);
         validateMenuGroupId(command.getMenuGroupId());
+        validateProductIds(command.getCreateMenuProductCommands());
+        validateMenuPrice(command.getPrice(), command.getCreateMenuProductCommands());
 
         Menu menu = new Menu(command.getName(),
                 command.getPrice(),
@@ -49,14 +50,36 @@ public class MenuService {
     }
 
     private void validateMenuGroupId(UUID menuGroupId) {
-        if (!menuGroupRepository.existById(menuGroupId)) {
-            throw new IllegalArgumentException();
+        if (!menuGroupRepository.existsById(menuGroupId)) {
+            throw new MenuGroupNotFoundException();
         }
     }
 
-    private void validateProductIds(List<CreateMenuProductCommand> commands, List<Product> products) {
+    private void validateProductIds(List<CreateMenuProductCommand> commands) {
+        List<UUID> productIds = commands.stream()
+                .map(CreateMenuProductCommand::getProductId)
+                .collect(Collectors.toList());
+
+        List<Product> products = productRepository.findAllByIdIn(productIds);
+
         if (commands.size() != products.size()) {
-            throw new IllegalArgumentException();
+            throw new ProductNotFoundException();
+        }
+    }
+
+    private void validateMenuPrice(BigDecimal menuPrice, List<CreateMenuProductCommand> createMenuProductCommands) {
+        BigDecimal menuProductsPrice = BigDecimal.ZERO;
+
+        for (CreateMenuProductCommand createMenuProductCommand : createMenuProductCommands) {
+            Product product = productRepository.findById(createMenuProductCommand.getProductId())
+                    .orElseThrow(IllegalArgumentException::new);
+
+            BigDecimal menuProductPrice = product.getPrice().getPrice().multiply(BigDecimal.valueOf(createMenuProductCommand.getQuantity()));
+            menuProductsPrice = menuProductsPrice.add(menuProductPrice);
+        }
+
+        if (menuPrice.compareTo(menuProductsPrice) > 0) {
+            throw new MenuPriceOverThanProductsPriceException();
         }
     }
 
