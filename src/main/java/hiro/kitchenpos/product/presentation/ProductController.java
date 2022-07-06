@@ -2,7 +2,8 @@ package hiro.kitchenpos.product.presentation;
 
 import hiro.kitchenpos.product.application.ProductService;
 import hiro.kitchenpos.product.application.dtos.ChangeProductInfo;
-import hiro.kitchenpos.product.presentation.dtos.ChangeProductRequest;
+import hiro.kitchenpos.product.presentation.dtos.ChangeProductNameRequest;
+import hiro.kitchenpos.product.presentation.dtos.ChangeProductPriceRequest;
 import hiro.kitchenpos.product.presentation.dtos.ChangeProductResponse;
 import hiro.kitchenpos.product.presentation.dtos.CreateProductRequest;
 import lombok.AllArgsConstructor;
@@ -27,10 +28,18 @@ public class ProductController {
         return ResponseEntity.created(URI.create("/api/products/" + id)).build();
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ChangeProductResponse> changeProductInfo(@RequestBody @Valid final ChangeProductRequest request, @PathVariable final UUID id) {
-        ChangeProductInfo productInfo = productService.change(id, request.getName(), request.getPrice());
+    @PutMapping("/{id}/name")
+    public ResponseEntity<ChangeProductResponse> changeProductName(@RequestBody @Valid final ChangeProductNameRequest request, @PathVariable final UUID id) {
+        ChangeProductInfo productInfo = productService.changeName(id, request.getName());
 
         return ResponseEntity.ok(ChangeProductResponse.fromProductInfo(productInfo));
     }
+
+    @PutMapping("/{id}/price")
+    public ResponseEntity<ChangeProductResponse> changeProductPrice(@RequestBody @Valid final ChangeProductPriceRequest request, @PathVariable final UUID id) {
+        ChangeProductInfo productInfo = productService.changePrice(id, request.getPrice());
+
+        return ResponseEntity.ok(ChangeProductResponse.fromProductInfo(productInfo));
+    }
+
 }

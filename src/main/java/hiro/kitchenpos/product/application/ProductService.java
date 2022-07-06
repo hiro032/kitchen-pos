@@ -6,11 +6,13 @@ import hiro.kitchenpos.product.domain.ProductRepository;
 import hiro.kitchenpos.product.domain.PurgomalumClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class ProductService {
 
@@ -24,12 +26,20 @@ public class ProductService {
         return entity.getId();
     }
 
-    public ChangeProductInfo change(UUID id, String name, BigDecimal price) {
+    public ChangeProductInfo changeName(final UUID id, final String changeName) {
         Product product = productRepository.findById(id)
                 .orElseThrow();
 
-        product.changeName(name, purgomalumClient);
-        product.changePrice(price);
+        product.changeName(changeName, purgomalumClient);
+
+        return ChangeProductInfo.fromEntity(product);
+    }
+
+    public ChangeProductInfo changePrice(final UUID id, final BigDecimal changePrice) {
+        Product product = productRepository.findById(id)
+                .orElseThrow();
+
+        product.changePrice(changePrice);
 
         return ChangeProductInfo.fromEntity(product);
     }
