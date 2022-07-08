@@ -1,5 +1,7 @@
 package hiro.kitchenpos.product.application;
 
+import hiro.kitchenpos.menu.domain.Menu;
+import hiro.kitchenpos.menu.domain.MenuRepository;
 import hiro.kitchenpos.product.application.dtos.ChangeProductInfo;
 import hiro.kitchenpos.product.domain.Product;
 import hiro.kitchenpos.product.domain.ProductRepository;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -17,6 +20,7 @@ import java.util.UUID;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final MenuRepository menuRepository;
     private final PurgomalumClient purgomalumClient;
 
     public UUID create(final String name, final BigDecimal price) {
@@ -40,6 +44,12 @@ public class ProductService {
                 .orElseThrow();
 
         product.changePrice(changePrice);
+
+        List<Menu> menus = menuRepository.findAllContainProduct(product.getId());
+
+        menus.stream()
+                .filter(Menu::priceIsOverThanProductsPrice)
+                .forEach(Menu::unDisplay);
 
         return ChangeProductInfo.fromEntity(product);
     }

@@ -33,12 +33,25 @@ public class Menu {
     @Embedded
     private MenuProducts menuProducts;
 
+    @Column(name = "displayed", nullable = false)
+    private Boolean displayed;
+
     public Menu(String name, BigDecimal price, UUID menuGroupId, List<MenuProduct> menuProducts) {
         this.id = UUID.randomUUID();
         this.name = new MenuName(name);
         this.price = new MenuPrice(price);
         this.menuGroupId = menuGroupId;
         this.menuProducts = new MenuProducts(menuProducts);
+        this.displayed = Boolean.TRUE;
     }
 
+    public boolean priceIsOverThanProductsPrice() {
+        BigDecimal productsPrice = menuProducts.calcTotalPrice();
+
+        return price.getPrice().compareTo(productsPrice) > 0;
+    }
+
+    public void unDisplay() {
+        this.displayed = Boolean.FALSE;
+    }
 }

@@ -103,6 +103,20 @@ class ProductControllerTest extends AcceptanceTest {
             );
         }
 
+        @DisplayName("상품 가격 변경시, 상품을 포함한 메뉴의 가격이 상품 가격의 합보다 크다면 전시 상태를 변경한다.")
+        @Test
+        void change_product_price() {
+            String url = 상품_생성_요청(DEFAULT_PRODUCT_NAME, DEFAULT_PRODUCT_PRICE);
+
+            ExtractableResponse<Response> response = RestAssured.given().log().all()
+                    .body(new ChangeProductPriceRequest(BigDecimal.TEN))
+                    .contentType(MediaType.APPLICATION_JSON_VALUE)
+                    .when()
+                    .put(url + "/price")
+                    .then().log().all()
+                    .extract();
+        }
+
         @DisplayName("수정할 상품 이름이 null 이거나 빈 값인 경우 에러가 발생한다.")
         @ParameterizedTest
         @NullAndEmptySource

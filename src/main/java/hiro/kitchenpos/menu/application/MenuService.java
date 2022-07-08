@@ -40,7 +40,9 @@ public class MenuService {
                 command.getMenuGroupId(),
                 command.getCreateMenuProductCommands().stream()
                         .map(createMenuProductCommand -> new MenuProduct(
-                                createMenuProductCommand.getProductId(),
+                                productRepository.findById(
+                                createMenuProductCommand.getProductId()
+                                ).orElseThrow(ProductNotFoundException::new),
                                 createMenuProductCommand.getQuantity()))
                         .collect(Collectors.toList()));
 

@@ -1,11 +1,13 @@
 package hiro.kitchenpos.menu.domain;
 
 import hiro.kitchenpos.menu.domain.exception.MenuProductQuantityException;
+import hiro.kitchenpos.product.domain.Product;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Getter
@@ -18,15 +20,17 @@ public class MenuProduct {
     @Column(name = "id", columnDefinition = "varbinary(16)")
     private UUID id;
 
-    private UUID productId;
+    @JoinColumn(name = "product_id")
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Product product;
 
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
-    public MenuProduct(final UUID productId, final int quantity) {
+    public MenuProduct(final Product product, final int quantity) {
         validateQuantity(quantity);
         this.id = UUID.randomUUID();
-        this.productId = productId;
+        this.product = product;
         this.quantity = quantity;
     }
 
@@ -34,5 +38,9 @@ public class MenuProduct {
         if (quantity <= 0) {
             throw new MenuProductQuantityException();
         }
+    }
+
+    public BigDecimal getPrice() {
+        return product.getPrice().getPrice().multiply(BigDecimal.valueOf(quantity));
     }
 }
