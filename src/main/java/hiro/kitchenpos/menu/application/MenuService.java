@@ -1,6 +1,7 @@
 package hiro.kitchenpos.menu.application;
 
 import hiro.kitchenpos.menu.application.dtos.CreateMenuCommand;
+import hiro.kitchenpos.menu.application.dtos.CreateMenuInfo;
 import hiro.kitchenpos.menu.application.dtos.CreateMenuProductCommand;
 import hiro.kitchenpos.menu.domain.Menu;
 import hiro.kitchenpos.menu.domain.MenuProduct;
@@ -29,7 +30,7 @@ public class MenuService {
     private final MenuGroupRepository menuGroupRepository;
     private final ProductRepository productRepository;
 
-    public UUID create(final CreateMenuCommand command) {
+    public CreateMenuInfo create(final CreateMenuCommand command) {
 
         validateMenuGroupId(command.getMenuGroupId());
         validateProductIds(command.getCreateMenuProductCommands());
@@ -48,7 +49,7 @@ public class MenuService {
 
         Menu entity = menuRepository.save(menu);
 
-        return entity.getId();
+        return CreateMenuInfo.toEntity(entity);
     }
 
     private void validateMenuGroupId(UUID menuGroupId) {

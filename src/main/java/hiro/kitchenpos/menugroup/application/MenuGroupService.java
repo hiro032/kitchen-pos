@@ -5,21 +5,23 @@ import hiro.kitchenpos.menugroup.domain.MenuGroup;
 import hiro.kitchenpos.menugroup.domain.MenuGroupRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.UUID;
 
 @RequiredArgsConstructor
+@Transactional
 @Service
 public class MenuGroupService {
 
     private final MenuGroupRepository repository;
 
-    public UUID create(final String name) {
+    public CreateMenuGroupInfo create(final String name) {
         MenuGroup menuGroup = new MenuGroup(name);
         MenuGroup entity = repository.save(menuGroup);
 
-        return entity.getId();
+        return CreateMenuGroupInfo.toEntity(entity);
     }
 
     public ChangeMenuGroupInfo change(final UUID id, final String changeName) {

@@ -3,6 +3,7 @@ package hiro.kitchenpos.product.application;
 import hiro.kitchenpos.menu.domain.Menu;
 import hiro.kitchenpos.menu.domain.MenuRepository;
 import hiro.kitchenpos.product.application.dtos.ChangeProductInfo;
+import hiro.kitchenpos.product.application.dtos.CreateProductInfo;
 import hiro.kitchenpos.product.domain.Product;
 import hiro.kitchenpos.product.domain.ProductRepository;
 import hiro.kitchenpos.product.domain.PurgomalumClient;
@@ -23,11 +24,11 @@ public class ProductService {
     private final MenuRepository menuRepository;
     private final PurgomalumClient purgomalumClient;
 
-    public UUID create(final String name, final BigDecimal price) {
+    public CreateProductInfo create(final String name, final BigDecimal price) {
         Product product = new Product(name, price, purgomalumClient);
         Product entity = productRepository.save(product);
 
-        return entity.getId();
+        return CreateProductInfo.toEntity(entity);
     }
 
     public ChangeProductInfo changeName(final UUID id, final String changeName) {

@@ -1,10 +1,12 @@
 package hiro.kitchenpos.menugroup.presentation;
 
+import hiro.kitchenpos.menugroup.application.CreateMenuGroupInfo;
 import hiro.kitchenpos.menugroup.application.MenuGroupService;
 import hiro.kitchenpos.menugroup.application.dtos.ChangeMenuGroupInfo;
 import hiro.kitchenpos.menugroup.presentation.dtos.ChangeMenuGroupRequest;
 import hiro.kitchenpos.menugroup.presentation.dtos.ChangeMenuGroupResponse;
 import hiro.kitchenpos.menugroup.presentation.dtos.CreateMenuGroupRequest;
+import hiro.kitchenpos.menugroup.presentation.dtos.MenuGroupResponse.CreateMenuGroupResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,10 +23,10 @@ public class MenuGroupController {
     private final MenuGroupService menuGroupService;
 
     @PostMapping
-    public ResponseEntity<Void> createMenuGroup(@Valid @RequestBody CreateMenuGroupRequest request) {
-        UUID id = menuGroupService.create(request.getName());
+    public ResponseEntity<CreateMenuGroupResponse> createMenuGroup(@Valid @RequestBody CreateMenuGroupRequest request) {
+        CreateMenuGroupInfo info = menuGroupService.create(request.getName());
 
-        return ResponseEntity.created(URI.create("/api/menu-groups/" + id)).build();
+        return ResponseEntity.created(URI.create("/api/menu-groups/" + info.getId())).body(CreateMenuGroupResponse.toInfo(info));
     }
 
     @PutMapping("/{id}")
