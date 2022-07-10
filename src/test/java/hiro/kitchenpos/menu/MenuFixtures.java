@@ -1,7 +1,7 @@
 package hiro.kitchenpos.menu;
 
 import hiro.kitchenpos.menu.domain.MenuProduct;
-import hiro.kitchenpos.menu.domain.MenuProducts;
+import hiro.kitchenpos.menu.presentation.dtos.ChangeMenuPriceRequest;
 import hiro.kitchenpos.menu.presentation.dtos.CreateMenuProductRequest;
 import hiro.kitchenpos.menu.presentation.dtos.CreateMenuRequest;
 import hiro.kitchenpos.product.domain.Product;
@@ -24,7 +24,8 @@ public class MenuFixtures {
         return new MenuProduct(product, 1);
     }
 
-    public static MenuProducts menuProducts(final MenuProduct... menuProducts) {
-        return new MenuProducts(List.of(menuProducts));
+    public static ChangeMenuPriceRequest changeMenuPriceRequest(final BigDecimal changePrice) {
+        return new ChangeMenuPriceRequest(changePrice);
     }
+
 }

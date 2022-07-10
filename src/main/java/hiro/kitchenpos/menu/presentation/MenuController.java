@@ -28,7 +28,7 @@ public class MenuController {
         return ResponseEntity.created(URI.create("/api/menus" + response.getId())).body(response);
     }
 
-    @PutMapping("{menuId}/price")
+    @PutMapping("/{menuId}/price")
     public ResponseEntity<MenuResponse> changeMenusPrice(@PathVariable UUID menuId, @Valid @RequestBody ChangeMenuPriceRequest request) {
         MenuInfo info = menuService.changePrice(menuId, request.getChangePrice());
 
