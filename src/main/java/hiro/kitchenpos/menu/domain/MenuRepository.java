@@ -1,6 +1,7 @@
 package hiro.kitchenpos.menu.domain;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface MenuRepository {
@@ -9,4 +10,5 @@ public interface MenuRepository {
 
     List<Menu> findAllContainProduct(UUID productId);
 
+    Optional<Menu> findById(UUID id);
 }

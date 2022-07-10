@@ -1,6 +1,7 @@
 package hiro.kitchenpos.menu.application.dtos;
 
 import hiro.kitchenpos.menu.domain.MenuProduct;
+import hiro.kitchenpos.product.application.dtos.ProductInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

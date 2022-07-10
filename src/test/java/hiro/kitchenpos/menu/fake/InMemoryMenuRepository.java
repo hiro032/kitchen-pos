@@ -3,10 +3,7 @@ package hiro.kitchenpos.menu.fake;
 import hiro.kitchenpos.menu.domain.Menu;
 import hiro.kitchenpos.menu.domain.MenuRepository;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class InMemoryMenuRepository implements MenuRepository {
 
@@ -22,6 +19,13 @@ public class InMemoryMenuRepository implements MenuRepository {
     @Override
     public List<Menu> findAllContainProduct(UUID id) {
         return null;
+    }
+
+    @Override
+    public Optional<Menu> findById(UUID id) {
+        return menus.values().stream()
+                .filter(menu -> menu.getId().equals(id))
+                .findFirst();
     }
 
 }

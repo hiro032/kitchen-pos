@@ -54,4 +54,17 @@ public class Menu {
     public void unDisplay() {
         this.displayed = Boolean.FALSE;
     }
+
+    public void changePrice(final BigDecimal changePrice) {
+        if (changePriceIsOverThanProductsPrice(changePrice)) {
+            unDisplay();
+        }
+        this.price = new MenuPrice(changePrice);
+    }
+
+    private boolean changePriceIsOverThanProductsPrice(final BigDecimal changePrice) {
+        BigDecimal bigDecimal = menuProducts.calcTotalPrice();
+        return changePrice.compareTo(menuProducts.calcTotalPrice()) > 0;
+    }
+
 }

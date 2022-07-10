@@ -1,4 +1,4 @@
-package hiro.kitchenpos.menu.application.dtos;
+package hiro.kitchenpos.product.application.dtos;
 
 import hiro.kitchenpos.product.domain.Product;
 import lombok.AllArgsConstructor;

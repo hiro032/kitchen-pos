@@ -3,9 +3,11 @@ package hiro.kitchenpos.menu.application;
 import hiro.kitchenpos.menu.application.dtos.CreateMenuCommand;
 import hiro.kitchenpos.menu.application.dtos.CreateMenuInfo;
 import hiro.kitchenpos.menu.application.dtos.CreateMenuProductCommand;
+import hiro.kitchenpos.menu.application.dtos.MenuInfo;
 import hiro.kitchenpos.menu.domain.Menu;
 import hiro.kitchenpos.menu.domain.MenuProduct;
 import hiro.kitchenpos.menu.domain.MenuRepository;
+import hiro.kitchenpos.menu.domain.exception.MenuNotFoundException;
 import hiro.kitchenpos.menu.domain.exception.MenuPriceOverThanProductsPriceException;
 import hiro.kitchenpos.menugroup.domain.MenuGroupRepository;
 import hiro.kitchenpos.menugroup.exception.MenuGroupNotFoundException;
@@ -86,4 +88,15 @@ public class MenuService {
         }
     }
 
+    public MenuInfo changePrice(final UUID id, final BigDecimal changePrice) {
+        Menu menu = menuRepository.findById(id)
+                .orElseThrow(MenuNotFoundException::new);
+
+        menu.changePrice(changePrice);
+
+        return MenuInfo.builder()
+                .id(menu.getId())
+                .price(menu.getPrice().getPrice())
+                .build();
+    }
 }

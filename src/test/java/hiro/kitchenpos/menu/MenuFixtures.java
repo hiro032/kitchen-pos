@@ -1,7 +1,10 @@
 package hiro.kitchenpos.menu;
 
+import hiro.kitchenpos.menu.domain.MenuProduct;
+import hiro.kitchenpos.menu.domain.MenuProducts;
 import hiro.kitchenpos.menu.presentation.dtos.CreateMenuProductRequest;
 import hiro.kitchenpos.menu.presentation.dtos.CreateMenuRequest;
+import hiro.kitchenpos.product.domain.Product;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,4 +20,11 @@ public class MenuFixtures {
         return new CreateMenuProductRequest(productId, quantity);
     }
 
+    public static MenuProduct menuProduct(final Product product) {
+        return new MenuProduct(product, 1);
+    }
+
+    public static MenuProducts menuProducts(final MenuProduct... menuProducts) {
+        return new MenuProducts(List.of(menuProducts));
+    }
 }
