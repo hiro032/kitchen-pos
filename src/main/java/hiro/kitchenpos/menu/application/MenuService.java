@@ -99,4 +99,16 @@ public class MenuService {
                 .price(menu.getPrice().getPrice())
                 .build();
     }
+
+    public MenuInfo hide(final UUID id) {
+        Menu menu = menuRepository.findById(id)
+                .orElseThrow(MenuNotFoundException::new);
+
+        menu.unDisplay();
+
+        return MenuInfo.builder()
+                .id(menu.getId())
+                .displayed(menu.getDisplayed())
+                .build();
+    }
 }

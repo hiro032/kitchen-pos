@@ -13,5 +13,6 @@ public class MenuInfo {
     private UUID id;
     private String name;
     private BigDecimal price;
+    private Boolean displayed;
 
 }

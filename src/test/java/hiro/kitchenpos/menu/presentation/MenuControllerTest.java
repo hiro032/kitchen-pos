@@ -106,4 +106,48 @@ class MenuControllerTest extends AcceptanceTest {
                 () -> assertThat(response.jsonPath().getDouble("price")).isEqualTo(5000)
         );
     }
+
+    /**
+     * Arrange
+     * 메뉴를 등록한다.
+     *
+     * Act
+     * 메뉴의 전시 상태를 숨김으로 변경한다.
+     *
+     * Assert
+     * 메뉴의 전시 상태가 숨김으로 변경된다.
+     */
+    @DisplayName("메뉴의 전시 상태를 숨김으로 변경한다.")
+    @Test
+    void menu_hide() {
+        // Arrange
+        UUID menuGroupId = 메뉴_그룹_생성();
+        UUID 치킨 = 상품_생성(createProductRequest("치킨"));
+        UUID 콜라 = 상품_생성(createProductRequest("콜라"));
+
+        CreateMenuRequest menuRequest = createMenuRequest(
+                menuGroupId
+                , Arrays.asList(
+                        createMenuProductRequest(치킨, 1),
+                        createMenuProductRequest(콜라, 1)
+                )
+        );
+
+        UUID menuId = 메뉴_생성(menuRequest);
+
+        // Act
+        ExtractableResponse<Response> response = RestAssured.given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .patch(MENU_END_POINT + "/" + menuId + "/hide")
+                .then().log().all()
+                .extract();
+
+        // Assert
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()),
+                () -> assertThat(response.jsonPath().getUUID("id")).isEqualTo(menuId),
+                () -> assertThat(response.jsonPath().getBoolean("displayed")).isFalse()
+        );
+    }
 }

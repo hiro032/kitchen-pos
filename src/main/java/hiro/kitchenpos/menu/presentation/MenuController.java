@@ -40,4 +40,16 @@ public class MenuController {
 
         return ResponseEntity.ok(response);
     }
+
+    @PatchMapping("/{menuId}/hide")
+    public ResponseEntity<MenuResponse> hideMenu(@PathVariable UUID menuId) {
+        MenuInfo info = menuService.hide(menuId);
+
+        MenuResponse response = MenuResponse.builder()
+                .id(info.getId())
+                .displayed(info.getDisplayed())
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
 }

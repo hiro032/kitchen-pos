@@ -21,5 +21,6 @@ public class MenuResponse {
     private String name;
     private BigDecimal price;
     private List<MenuProductInfo> menuProductInfos = new ArrayList<>();
+    private boolean displayed;
 
 }
