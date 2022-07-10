@@ -2,7 +2,11 @@ package hiro.kitchenpos.menu.application;
 
 import hiro.kitchenpos.menu.application.dtos.CreateMenuCommand;
 import hiro.kitchenpos.menu.application.dtos.CreateMenuProductCommand;
+import hiro.kitchenpos.menu.application.dtos.MenuInfo;
+import hiro.kitchenpos.menu.domain.Menu;
+import hiro.kitchenpos.menu.domain.MenuProduct;
 import hiro.kitchenpos.menu.domain.MenuRepository;
+import hiro.kitchenpos.menu.domain.exception.MenuNotFoundException;
 import hiro.kitchenpos.menu.domain.exception.MenuPriceOverThanProductsPriceException;
 import hiro.kitchenpos.menu.fake.InMemoryMenuRepository;
 import hiro.kitchenpos.menugroup.domain.MenuGroup;
@@ -132,5 +136,36 @@ class MenuServiceTest {
         // Act
         assertThatThrownBy(() -> menuService.create(createMenuCommand))
                 .isInstanceOf(MenuPriceOverThanProductsPriceException.class);
+    }
+
+    @DisplayName("존재하지 않는 메뉴 id를 통해 메뉴 가격 변경 요청시 예외")
+    @Test
+    void change_price_not_found_menu_id() {
+        assertThatThrownBy(() -> menuService.changePrice(UUID.randomUUID(), BigDecimal.ONE))
+                .isInstanceOf(MenuNotFoundException.class);
+    }
+
+    @DisplayName("메뉴 가격 변경 성공시, 변경된 메뉴 정보를 응답 한다.")
+    @Test
+    void change_menu_price() {
+        UUID menuId = 메뉴_등록();
+        MenuInfo menuInfo = menuService.changePrice(menuId, BigDecimal.valueOf(5000));
+
+        assertThat(menuInfo.getPrice()).isEqualTo(BigDecimal.valueOf(5000));
+    }
+
+    private UUID 메뉴_등록() {
+        MenuGroup menuGroup = new MenuGroup("한식");
+        Product product = new Product("치킨"
+                , BigDecimal.valueOf(10000)
+                , new InmemoryPurgomalumClient());
+
+        MenuProduct menuProduct = new MenuProduct(product, 1);
+
+        Menu menu = new Menu("치킨", BigDecimal.valueOf(10000), menuGroup.getId(), Collections.singletonList(menuProduct));
+
+        menuRepository.save(menu);
+
+        return menu.getId();
     }
 }

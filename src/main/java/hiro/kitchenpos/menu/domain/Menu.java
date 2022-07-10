@@ -63,7 +63,6 @@ public class Menu {
     }
 
     private boolean changePriceIsOverThanProductsPrice(final BigDecimal changePrice) {
-        BigDecimal bigDecimal = menuProducts.calcTotalPrice();
         return changePrice.compareTo(menuProducts.calcTotalPrice()) > 0;
     }
 
