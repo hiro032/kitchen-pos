@@ -13,7 +13,7 @@ import java.util.UUID;
 public class MenuFixtures {
 
     public static CreateMenuRequest createMenuRequest(final UUID menuGroupId, final List<CreateMenuProductRequest> requests) {
-        return new CreateMenuRequest("치킨 + 콜라", BigDecimal.valueOf(20000), menuGroupId, requests);
+        return new CreateMenuRequest("치킨 + 콜라", BigDecimal.valueOf(10000), menuGroupId, requests);
     }
 
     public static CreateMenuProductRequest createMenuProductRequest(final UUID productId, final int quantity) {

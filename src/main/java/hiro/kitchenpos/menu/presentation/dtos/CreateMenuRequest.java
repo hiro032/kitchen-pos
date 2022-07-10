@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
@@ -15,9 +17,13 @@ import java.util.UUID;
 @AllArgsConstructor
 public class CreateMenuRequest {
 
+    @NotBlank
     private String name;
+    @NotNull
     private BigDecimal price;
+    @NotNull
     private UUID menuGroupId;
+    @NotNull
     private List<CreateMenuProductRequest> createMenuProductRequests;
 
     public CreateMenuCommand toCommand() {

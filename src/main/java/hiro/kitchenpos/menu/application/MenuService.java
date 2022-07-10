@@ -54,13 +54,13 @@ public class MenuService {
         return CreateMenuInfo.toEntity(entity);
     }
 
-    private void validateMenuGroupId(UUID menuGroupId) {
+    private void validateMenuGroupId(final UUID menuGroupId) {
         if (!menuGroupRepository.existsById(menuGroupId)) {
             throw new MenuGroupNotFoundException();
         }
     }
 
-    private void validateProductIds(List<CreateMenuProductCommand> commands) {
+    private void validateProductIds(final List<CreateMenuProductCommand> commands) {
         List<UUID> productIds = commands.stream()
                 .map(CreateMenuProductCommand::getProductId)
                 .collect(Collectors.toList());
@@ -72,7 +72,7 @@ public class MenuService {
         }
     }
 
-    private void validateMenuPrice(BigDecimal menuPrice, List<CreateMenuProductCommand> createMenuProductCommands) {
+    private void validateMenuPrice(final BigDecimal menuPrice, final List<CreateMenuProductCommand> createMenuProductCommands) {
         BigDecimal menuProductsPrice = BigDecimal.ZERO;
 
         for (CreateMenuProductCommand createMenuProductCommand : createMenuProductCommands) {
@@ -105,6 +105,18 @@ public class MenuService {
                 .orElseThrow(MenuNotFoundException::new);
 
         menu.unDisplay();
+
+        return MenuInfo.builder()
+                .id(menu.getId())
+                .displayed(menu.getDisplayed())
+                .build();
+    }
+
+    public MenuInfo display(final UUID menuId) {
+        Menu menu = menuRepository.findById(menuId)
+                .orElseThrow(MenuNotFoundException::new);
+
+        menu.display();
 
         return MenuInfo.builder()
                 .id(menu.getId())

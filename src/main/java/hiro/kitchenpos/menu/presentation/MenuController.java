@@ -3,7 +3,10 @@ package hiro.kitchenpos.menu.presentation;
 import hiro.kitchenpos.menu.application.MenuService;
 import hiro.kitchenpos.menu.application.dtos.CreateMenuInfo;
 import hiro.kitchenpos.menu.application.dtos.MenuInfo;
-import hiro.kitchenpos.menu.presentation.dtos.*;
+import hiro.kitchenpos.menu.presentation.dtos.ChangeMenuPriceRequest;
+import hiro.kitchenpos.menu.presentation.dtos.CreateMenuRequest;
+import hiro.kitchenpos.menu.presentation.dtos.CreateMenuResponse;
+import hiro.kitchenpos.menu.presentation.dtos.MenuResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +47,18 @@ public class MenuController {
     @PatchMapping("/{menuId}/hide")
     public ResponseEntity<MenuResponse> hideMenu(@PathVariable UUID menuId) {
         MenuInfo info = menuService.hide(menuId);
+
+        MenuResponse response = MenuResponse.builder()
+                .id(info.getId())
+                .displayed(info.getDisplayed())
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("{menuId}/display")
+    public ResponseEntity<MenuResponse> displayMenu(@PathVariable UUID menuId) {
+        MenuInfo info = menuService.display(menuId);
 
         MenuResponse response = MenuResponse.builder()
                 .id(info.getId())

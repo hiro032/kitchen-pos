@@ -1,5 +1,6 @@
 package hiro.kitchenpos.menu.domain;
 
+import hiro.kitchenpos.menu.domain.exception.MenuPriceOverThanProductsPriceException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -51,6 +52,13 @@ public class Menu {
         return price.getPrice().compareTo(productsPrice) > 0;
     }
 
+    public void display() {
+        if(menuPriceOverThenProductsPrice()) {
+            throw new MenuPriceOverThanProductsPriceException();
+        }
+        this.displayed = Boolean.TRUE;
+    }
+
     public void unDisplay() {
         this.displayed = Boolean.FALSE;
     }
@@ -64,6 +72,10 @@ public class Menu {
 
     private boolean changePriceIsOverThanProductsPrice(final BigDecimal changePrice) {
         return changePrice.compareTo(menuProducts.calcTotalPrice()) > 0;
+    }
+
+    private boolean menuPriceOverThenProductsPrice() {
+        return price.getPrice().compareTo(menuProducts.calcTotalPrice()) > 0;
     }
 
 }
