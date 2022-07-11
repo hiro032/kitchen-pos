@@ -24,4 +24,16 @@ public class MenuGroupStep {
 
         return response.jsonPath().getUUID("id");
     }
+
+    public static UUID 메뉴_그룹_생성(final String name) {
+        ExtractableResponse<Response> response = RestAssured.given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(createMenuGroupRequest(name))
+                .when()
+                .post(END_POINT)
+                .then().log().all()
+                .extract();
+
+        return response.jsonPath().getUUID("id");
+    }
 }

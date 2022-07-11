@@ -11,4 +11,6 @@ public interface MenuRepository {
     List<Menu> findAllContainProduct(UUID productId);
 
     Optional<Menu> findById(UUID id);
+
+    boolean existsById(UUID menuId);
 }

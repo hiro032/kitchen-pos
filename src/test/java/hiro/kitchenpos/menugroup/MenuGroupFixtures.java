@@ -9,4 +9,8 @@ public class MenuGroupFixtures {
     public static CreateMenuGroupRequest createMenuGroupRequest() {
         return new CreateMenuGroupRequest(DEFAULT_MENU_GROUP_NAME);
     }
+
+    public static CreateMenuGroupRequest createMenuGroupRequest(final String name) {
+        return new CreateMenuGroupRequest(name);
+    }
 }

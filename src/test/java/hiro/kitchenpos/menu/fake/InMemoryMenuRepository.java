@@ -28,4 +28,10 @@ public class InMemoryMenuRepository implements MenuRepository {
                 .findFirst();
     }
 
+    @Override
+    public boolean existsById(UUID menuId) {
+        return menus.values().stream()
+                .anyMatch(menu -> menu.getId().equals(menuId));
+    }
+
 }
