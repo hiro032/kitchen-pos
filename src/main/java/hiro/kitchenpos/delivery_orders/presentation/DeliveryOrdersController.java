@@ -6,13 +6,11 @@ import hiro.kitchenpos.delivery_orders.presentation.dtos.DeliveryOrderResponse.C
 import hiro.kitchenpos.delivery_orders.presentation.dtos.DeliveryOrdersRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @RequestMapping("/api/delivery-orders")
@@ -35,6 +33,13 @@ public class DeliveryOrdersController {
 
         return ResponseEntity.created(URI.create("/api/delivery-orders/" + response.getId()))
                 .body(response);
+    }
+
+    @PatchMapping("/{orderId}/accept")
+    public ResponseEntity<Void> accept(@PathVariable UUID orderId) {
+        deliveryOrderService.accept(orderId);
+
+        return ResponseEntity.ok().build();
     }
 
 }

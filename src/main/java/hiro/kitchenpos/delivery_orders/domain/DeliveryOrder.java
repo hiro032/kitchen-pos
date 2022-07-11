@@ -1,5 +1,6 @@
 package hiro.kitchenpos.delivery_orders.domain;
 
+import hiro.kitchenpos.delivery_orders.domain.exception.OrderStatusException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -40,7 +41,15 @@ public class DeliveryOrder {
         this.orderDateTime = LocalDateTime.now();
     }
 
+    public void accept() {
+        if (status != DeliveryOrderStatus.WAITING) {
+            throw new OrderStatusException("대기중인 주문이 아니라면 접수가 불가능 합니다.");
+        }
+        this.status = DeliveryOrderStatus.ACCEPTED;
+    }
+
     public List<OrderLineItem> getOrderLineItems() {
         return orderLineItems.getOrderLineItems();
     }
+
 }

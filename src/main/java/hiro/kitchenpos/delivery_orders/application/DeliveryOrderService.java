@@ -8,6 +8,7 @@ import hiro.kitchenpos.delivery_orders.domain.DeliveryOrder;
 import hiro.kitchenpos.delivery_orders.domain.DeliveryOrderRepository;
 import hiro.kitchenpos.delivery_orders.domain.DeliveryOrderStatus;
 import hiro.kitchenpos.delivery_orders.domain.OrderLineItem;
+import hiro.kitchenpos.delivery_orders.domain.exception.DeliveryOrderNotFoundException;
 import hiro.kitchenpos.menu.domain.MenuRepository;
 import hiro.kitchenpos.menu.domain.exception.MenuNotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -64,4 +65,10 @@ public class DeliveryOrderService {
         }
     }
 
+    public void accept(final UUID id) {
+        DeliveryOrder deliveryOrder = deliveryOrderRepository.findById(id)
+                .orElseThrow(DeliveryOrderNotFoundException::new);
+
+        deliveryOrder.accept();
+    }
 }
