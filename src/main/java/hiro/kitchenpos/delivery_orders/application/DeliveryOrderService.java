@@ -65,10 +65,22 @@ public class DeliveryOrderService {
         }
     }
 
-    public void accept(final UUID id) {
+    public ChangeStatusDeliveryOrderInfo accept(final UUID id) {
         DeliveryOrder deliveryOrder = deliveryOrderRepository.findById(id)
                 .orElseThrow(DeliveryOrderNotFoundException::new);
 
         deliveryOrder.accept();
+
+        return ChangeStatusDeliveryOrderInfo.builder()
+                .id(deliveryOrder.getId())
+                .orderStatus(deliveryOrder.getStatus().name())
+                .build();
+    }
+
+    public void serve(final UUID id) {
+        DeliveryOrder deliveryOrder = deliveryOrderRepository.findById(id)
+                .orElseThrow(DeliveryOrderNotFoundException::new);
+
+        deliveryOrder.serve();
     }
 }

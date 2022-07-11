@@ -19,4 +19,11 @@ public class DeliveryOrderResponse {
         private List<CreateOrderLineItemInfo> orderLineItemsInfo;
     }
 
+    @Data
+    @Builder
+    public static class ChangeStatusDeliveryOrderResponse {
+        private UUID id;
+        private String orderStatus;
+    }
+
 }

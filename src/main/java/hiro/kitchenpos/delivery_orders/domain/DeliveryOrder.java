@@ -48,6 +48,13 @@ public class DeliveryOrder {
         this.status = DeliveryOrderStatus.ACCEPTED;
     }
 
+    public void serve() {
+        if (status != DeliveryOrderStatus.ACCEPTED) {
+            throw new OrderStatusException("접수된 주문이 아니라면 서빙이 불가능 합니다.");
+        }
+        this.status = DeliveryOrderStatus.SERVED;
+    }
+
     public List<OrderLineItem> getOrderLineItems() {
         return orderLineItems.getOrderLineItems();
     }

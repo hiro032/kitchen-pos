@@ -23,4 +23,13 @@ public class DeliveryOrderInfo {
 
     }
 
+    @Data
+    @Builder
+    public static class ChangeStatusDeliveryOrderInfo {
+
+        private UUID id;
+        private String orderStatus;
+
+    }
+
 }
