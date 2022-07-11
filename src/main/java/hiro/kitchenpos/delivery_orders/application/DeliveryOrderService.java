@@ -77,10 +77,15 @@ public class DeliveryOrderService {
                 .build();
     }
 
-    public void serve(final UUID id) {
+    public ChangeStatusDeliveryOrderInfo serve(final UUID id) {
         DeliveryOrder deliveryOrder = deliveryOrderRepository.findById(id)
                 .orElseThrow(DeliveryOrderNotFoundException::new);
 
         deliveryOrder.serve();
+
+        return ChangeStatusDeliveryOrderInfo.builder()
+                .id(deliveryOrder.getId())
+                .orderStatus(deliveryOrder.getStatus().name())
+                .build();
     }
 }

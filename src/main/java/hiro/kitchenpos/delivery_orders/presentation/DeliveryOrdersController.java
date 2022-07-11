@@ -54,10 +54,15 @@ public class DeliveryOrdersController {
     }
 
     @PatchMapping("/{orderId}/serve")
-    public ResponseEntity<Void> serve(@PathVariable UUID orderId) {
-        deliveryOrderService.serve(orderId);
+    public ResponseEntity<ChangeStatusDeliveryOrderResponse> serve(@PathVariable UUID orderId) {
+        ChangeStatusDeliveryOrderInfo info = deliveryOrderService.serve(orderId);
 
-        return ResponseEntity.ok().build();
+        ChangeStatusDeliveryOrderResponse response = ChangeStatusDeliveryOrderResponse.builder()
+                .id(info.getId())
+                .orderStatus(info.getOrderStatus())
+                .build();
+
+        return ResponseEntity.ok(response);
     }
 
 }
