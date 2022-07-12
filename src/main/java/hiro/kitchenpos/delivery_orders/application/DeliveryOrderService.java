@@ -4,10 +4,7 @@ import hiro.kitchenpos.delivery_orders.application.dtos.CreateDeliveryOrderComma
 import hiro.kitchenpos.delivery_orders.application.dtos.DeliveryOrderInfo.*;
 import hiro.kitchenpos.delivery_orders.application.dtos.OrderLineItemCommand;
 import hiro.kitchenpos.delivery_orders.application.dtos.OrderLineItemInfo.*;
-import hiro.kitchenpos.delivery_orders.domain.DeliveryOrder;
-import hiro.kitchenpos.delivery_orders.domain.DeliveryOrderRepository;
-import hiro.kitchenpos.delivery_orders.domain.DeliveryOrderStatus;
-import hiro.kitchenpos.delivery_orders.domain.OrderLineItem;
+import hiro.kitchenpos.delivery_orders.domain.*;
 import hiro.kitchenpos.delivery_orders.domain.exception.DeliveryOrderNotFoundException;
 import hiro.kitchenpos.menu.domain.MenuRepository;
 import hiro.kitchenpos.menu.domain.exception.MenuNotFoundException;
@@ -26,16 +23,13 @@ public class DeliveryOrderService {
 
     private final DeliveryOrderRepository deliveryOrderRepository;
     private final MenuRepository menuRepository;
+    private final DeliveryOrderFactory deliveryOrderFactory;
+    private final RidersClient ridersClient;
 
     public CreateDeliveryOrderInfo create(final CreateDeliveryOrderCommand command) {
         validateMenuIds(command.getOrderLineItemCommands());
 
-        List<OrderLineItem> orderLineItems = command.getOrderLineItemCommands().stream()
-                .map(orderLineItemCommand
-                        -> new OrderLineItem(orderLineItemCommand.getMenuId(), orderLineItemCommand.getQuantity()))
-                .collect(Collectors.toList());
-
-        DeliveryOrder deliveryOrder = new DeliveryOrder(DeliveryOrderStatus.WAITING, orderLineItems, command.getDeliveryAddress());
+        DeliveryOrder deliveryOrder = deliveryOrderFactory.createDeliveryOrder(command);
 
         DeliveryOrder entity = deliveryOrderRepository.save(deliveryOrder);
 
@@ -82,6 +76,20 @@ public class DeliveryOrderService {
                 .orElseThrow(DeliveryOrderNotFoundException::new);
 
         deliveryOrder.serve();
+
+        return ChangeStatusDeliveryOrderInfo.builder()
+                .id(deliveryOrder.getId())
+                .orderStatus(deliveryOrder.getStatus().name())
+                .build();
+    }
+
+    public ChangeStatusDeliveryOrderInfo startDelivery(final UUID id) {
+        DeliveryOrder deliveryOrder = deliveryOrderRepository.findById(id)
+                .orElseThrow(DeliveryOrderNotFoundException::new);
+
+        deliveryOrder.startDelivery();
+
+        ridersClient.requestDelivery(id, deliveryOrder.getOrderPrice(), deliveryOrder.getDeliveryAddress());
 
         return ChangeStatusDeliveryOrderInfo.builder()
                 .id(deliveryOrder.getId())

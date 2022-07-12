@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -33,7 +34,7 @@ public class DeliveryOrder {
     private LocalDateTime orderDateTime;
 
 
-    public DeliveryOrder(DeliveryOrderStatus status, List<OrderLineItem> orderLineItems, String deliveryAddress) {
+    public DeliveryOrder(final DeliveryOrderStatus status, final List<OrderLineItem> orderLineItems, final String deliveryAddress) {
         this.id = UUID.randomUUID();
         this.status = status;
         this.orderLineItems = new OrderLineItems(orderLineItems);
@@ -53,6 +54,17 @@ public class DeliveryOrder {
             throw new OrderStatusException("접수된 주문이 아니라면 서빙이 불가능 합니다.");
         }
         this.status = DeliveryOrderStatus.SERVED;
+    }
+
+    public void startDelivery() {
+        if (status != DeliveryOrderStatus.SERVED) {
+            throw new OrderStatusException("서빙이 완료된 주문이 아니라면 배달 시작이 불가능 합니다.");
+        }
+        this.status = DeliveryOrderStatus.DELIVERING;
+    }
+
+    public BigDecimal getOrderPrice() {
+        return orderLineItems.totalPrice();
     }
 
     public List<OrderLineItem> getOrderLineItems() {

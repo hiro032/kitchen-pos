@@ -17,8 +17,12 @@ public class ProductsFixtures {
         return new Product(DEFAULT_PRODUCT_NAME, DEFAULT_PRODUCT_PRICE, PURGOMALUM_CLIENT);
     }
 
-    public static Product product(BigDecimal price) {
+    public static Product product(final BigDecimal price) {
         return new Product(DEFAULT_PRODUCT_NAME, price, PURGOMALUM_CLIENT);
+    }
+
+    public static Product product(final String name) {
+        return new Product(name, DEFAULT_PRODUCT_PRICE, PURGOMALUM_CLIENT);
     }
 
     public static CreateProductRequest createProductRequest() {

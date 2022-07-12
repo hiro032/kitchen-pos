@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Getter
@@ -22,8 +23,15 @@ public class OrderLineItem {
 
     private int quantity;
 
-    public OrderLineItem(final UUID menuId, final int quantity) {
+    private BigDecimal price;
+
+    public OrderLineItem(final UUID menuId, final int quantity, final BigDecimal price) {
         this.menuId = menuId;
         this.quantity = quantity;
+        this.price = price;
+    }
+
+    public BigDecimal totalPrice() {
+        return price.multiply(BigDecimal.valueOf(quantity));
     }
 }

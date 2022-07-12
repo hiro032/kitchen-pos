@@ -1,5 +1,6 @@
 package hiro.kitchenpos.menu;
 
+import hiro.kitchenpos.menu.domain.Menu;
 import hiro.kitchenpos.menu.domain.MenuProduct;
 import hiro.kitchenpos.menu.presentation.dtos.ChangeMenuPriceRequest;
 import hiro.kitchenpos.menu.presentation.dtos.CreateMenuProductRequest;
@@ -28,4 +29,7 @@ public class MenuFixtures {
         return new ChangeMenuPriceRequest(changePrice);
     }
 
+    public static Menu menu(String name, BigDecimal price, UUID menuGroupId, List<MenuProduct> menuProducts) {
+        return new Menu(name, price, menuGroupId, menuProducts);
+    }
 }

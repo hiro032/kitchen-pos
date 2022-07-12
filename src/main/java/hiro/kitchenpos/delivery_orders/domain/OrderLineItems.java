@@ -8,6 +8,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,5 +23,15 @@ public class OrderLineItems {
 
     public OrderLineItems(final List<OrderLineItem> orderLineItems) {
         this.orderLineItems = orderLineItems;
+    }
+
+    public BigDecimal totalPrice() {
+        BigDecimal price = BigDecimal.ZERO;
+
+        for (OrderLineItem orderLineItem : orderLineItems) {
+            price = price.add(orderLineItem.totalPrice());
+        }
+
+        return price;
     }
 }

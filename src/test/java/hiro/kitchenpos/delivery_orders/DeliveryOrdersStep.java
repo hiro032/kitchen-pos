@@ -4,8 +4,9 @@ import hiro.kitchenpos.delivery_orders.presentation.dtos.DeliveryOrdersRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import java.util.UUID;
 import org.springframework.http.MediaType;
+
+import java.util.UUID;
 
 public class DeliveryOrdersStep {
 
@@ -26,6 +27,15 @@ public class DeliveryOrdersStep {
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .when()
                 .patch(END_POINT + "/" + orderId + "/accept")
+                .then().log().all()
+                .extract();
+    }
+
+    public static ExtractableResponse<Response> 배달_주문_서빙(final UUID orderId) {
+        return RestAssured.given().log().all()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .patch(END_POINT + "/" + orderId + "/serve")
                 .then().log().all()
                 .extract();
     }
