@@ -45,7 +45,6 @@ class DeliveryOrderTest {
             assertThat(deliveryOrder.getStatus()).isEqualTo(DeliveryOrderStatus.SERVED);
         }
 
-
         @DisplayName("서빙 상태인 배달 주문에게 배달 시작 요청시 배달중 상태로 변경 된다.")
         @Test
         void start_delivery() {
@@ -58,6 +57,20 @@ class DeliveryOrderTest {
 
             // Assert
             assertThat(deliveryOrder.getStatus()).isEqualTo(DeliveryOrderStatus.DELIVERING);
+        }
+
+        @DisplayName("배달중 상태인 배달 주문에게 배달 완료 요청시 배달중 상태로 변경 된다.")
+        @Test
+        void complete_delivery() {
+            // Arrange
+            OrderLineItem orderLineItem = new OrderLineItem();
+            DeliveryOrder deliveryOrder = new DeliveryOrder(DeliveryOrderStatus.DELIVERING, Collections.singletonList(orderLineItem), "배달 주소");
+
+            // Act
+            deliveryOrder.completeDelivery();
+
+            // Assert
+            assertThat(deliveryOrder.getStatus()).isEqualTo(DeliveryOrderStatus.DELIVERED);
         }
     }
 
@@ -104,6 +117,20 @@ class DeliveryOrderTest {
             // Act
             // Assert
             assertThatThrownBy(deliveryOrder::startDelivery)
+                    .isInstanceOf(OrderStatusException.class);
+        }
+
+        @DisplayName("배달중 상태가 아닌 배달 주문에게 배달 완료 요청시 예외가 발생한다.")
+        @ParameterizedTest
+        @ValueSource(strings = {"WAITING", "ACCEPTED", "SERVED", "DELIVERED", "COMPLETED"})
+        void complete_delivery_exception(final String status) {
+            // Arrange
+            OrderLineItem orderLineItem = new OrderLineItem();
+            DeliveryOrder deliveryOrder = new DeliveryOrder(DeliveryOrderStatus.valueOf(status), Collections.singletonList(orderLineItem), "배달 주소");
+
+            // Act
+            // Assert
+            assertThatThrownBy(deliveryOrder::completeDelivery)
                     .isInstanceOf(OrderStatusException.class);
         }
 

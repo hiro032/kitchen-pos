@@ -72,4 +72,16 @@ public class DeliveryOrdersController {
 
         return ResponseEntity.ok(response);
     }
+
+    @PatchMapping("/{orderId}/complete-delivery")
+    public ResponseEntity<ChangeStatusDeliveryOrderResponse> completeDelivery(@PathVariable final UUID orderId) {
+        ChangeStatusDeliveryOrderInfo info = deliveryOrderService.completeDelivery(orderId);
+
+        ChangeStatusDeliveryOrderResponse response = ChangeStatusDeliveryOrderResponse.builder()
+                .id(info.getId())
+                .orderStatus(info.getOrderStatus())
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
 }

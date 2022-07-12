@@ -96,4 +96,16 @@ public class DeliveryOrderService {
                 .orderStatus(deliveryOrder.getStatus().name())
                 .build();
     }
+
+    public ChangeStatusDeliveryOrderInfo completeDelivery(final UUID id) {
+        DeliveryOrder deliveryOrder = deliveryOrderRepository.findById(id)
+                .orElseThrow(DeliveryOrderNotFoundException::new);
+
+        deliveryOrder.completeDelivery();
+
+        return ChangeStatusDeliveryOrderInfo.builder()
+                .id(deliveryOrder.getId())
+                .orderStatus(deliveryOrder.getStatus().name())
+                .build();
+    }
 }

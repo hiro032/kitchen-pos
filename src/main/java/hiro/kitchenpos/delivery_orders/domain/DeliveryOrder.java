@@ -63,6 +63,13 @@ public class DeliveryOrder {
         this.status = DeliveryOrderStatus.DELIVERING;
     }
 
+    public void completeDelivery() {
+        if (status != DeliveryOrderStatus.DELIVERING) {
+            throw new OrderStatusException("배달중인 주문이 아니라면 배달 완료가 불가능 합니다.");
+        }
+        this.status = DeliveryOrderStatus.DELIVERED;
+    }
+
     public BigDecimal getOrderPrice() {
         return orderLineItems.totalPrice();
     }
@@ -70,5 +77,4 @@ public class DeliveryOrder {
     public List<OrderLineItem> getOrderLineItems() {
         return orderLineItems.getOrderLineItems();
     }
-
 }
