@@ -1,5 +1,8 @@
 # kitchen-pos
 
+
+### 이벤트 스토밍 
+
 <img width="705" alt="스크린샷 2022-08-01 오후 1 51 24" src="https://user-images.githubusercontent.com/91322023/182074740-b3e4adff-fe4d-44e1-9f55-7ebfc62c2003.png">
 <img width="708" alt="스크린샷 2022-08-01 오후 1 51 37" src="https://user-images.githubusercontent.com/91322023/182074759-768dc48f-aa47-481b-ada4-6fa0079b7a95.png">
 <img width="709" alt="스크린샷 2022-08-01 오후 1 51 46" src="https://user-images.githubusercontent.com/91322023/182074770-07127bf7-1c56-4ad0-be90-7e27958a7023.png">
