@@ -1,4 +1,4 @@
-# kitchen-pos
+# pos application
 
 
 ### 이벤트 스토밍 
