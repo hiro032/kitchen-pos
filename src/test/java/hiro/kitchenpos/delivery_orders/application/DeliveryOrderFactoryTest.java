@@ -18,9 +18,8 @@ import static hiro.kitchenpos.delivery_orders.DeliveryOrderFixtures.createDelive
 import static hiro.kitchenpos.delivery_orders.DeliveryOrderFixtures.orderLineItemCommand;
 import static hiro.kitchenpos.menu.MenuFixtures.menu;
 import static hiro.kitchenpos.menu.MenuFixtures.menuProduct;
-import static hiro.kitchenpos.product.ProductsFixtures.product;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 class DeliveryOrderFactoryTest {
 
@@ -36,9 +35,9 @@ class DeliveryOrderFactoryTest {
     @DisplayName("CreateDeliveryOrderCommand 를 통해 도메인 객체를 생성한다.")
     @Test
     void create() {
-        MenuProduct 치킨 = menuProduct(product("치킨"));
-        MenuProduct 콜라 = menuProduct(product("콜라"));
-        MenuProduct 피자 = menuProduct(product("피자"));
+        MenuProduct 치킨 = menuProduct(UUID.randomUUID(), BigDecimal.TEN);
+        MenuProduct 콜라 = menuProduct(UUID.randomUUID(), BigDecimal.TEN);
+        MenuProduct 피자 = menuProduct(UUID.randomUUID(), BigDecimal.TEN);
 
         Menu 치킨_콜라 = menu("치킨+콜라", BigDecimal.TEN, UUID.randomUUID(), Arrays.asList(치킨, 콜라));
         Menu 피자_콜라 = menu("피자+콜라", BigDecimal.TEN, UUID.randomUUID(), Arrays.asList(피자, 콜라));

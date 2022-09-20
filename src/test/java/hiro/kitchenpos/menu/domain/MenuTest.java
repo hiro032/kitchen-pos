@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.UUID;
 
 import static hiro.kitchenpos.menu.MenuFixtures.menuProduct;
-import static hiro.kitchenpos.product.ProductsFixtures.product;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -45,7 +44,7 @@ class MenuTest {
     @ParameterizedTest
     @ValueSource(longs = {-100, -1})
     void change_price_under_zero(final long price) {
-        assertThatThrownBy(() -> new Menu("치킨 메뉴", BigDecimal.valueOf(price), UUID.randomUUID(), Arrays.asList(menuProduct(product()), menuProduct(product()))))
+        assertThatThrownBy(() -> new Menu("치킨 메뉴", BigDecimal.valueOf(price), UUID.randomUUID(), Arrays.asList(menuProduct(), menuProduct())))
                 .isInstanceOf(MenuPriceLessThanZeroException.class);
     }
 
@@ -53,8 +52,8 @@ class MenuTest {
     @Test
     void change_price() {
         // Arrange
-        MenuProduct menuProduct1 = menuProduct(product(BigDecimal.valueOf(20000)));
-        MenuProduct menuProduct2 = menuProduct(product(BigDecimal.valueOf(10000)));
+        MenuProduct menuProduct1 = menuProduct();
+        MenuProduct menuProduct2 = menuProduct();
 
         Menu menu = new Menu("치킨 메뉴", BigDecimal.valueOf(50000), UUID.randomUUID(), Arrays.asList(menuProduct2, menuProduct1));
 
@@ -69,13 +68,13 @@ class MenuTest {
     @Test
     void change_price_less_than_products() {
         // Arrange
-        MenuProduct menuProduct1 = menuProduct(product(BigDecimal.valueOf(20000)));
-        MenuProduct menuProduct2 = menuProduct(product(BigDecimal.valueOf(10000)));
+        MenuProduct menuProduct1 = menuProduct(BigDecimal.valueOf(10000));
+        MenuProduct menuProduct2 = menuProduct(BigDecimal.valueOf(20000));
 
         Menu menu = new Menu("치킨 메뉴", BigDecimal.valueOf(10000), UUID.randomUUID(), Arrays.asList(menuProduct2, menuProduct1));
 
         // Act
-        menu.changePrice(BigDecimal.valueOf(20000));
+        menu.changePrice(BigDecimal.valueOf(10000));
 
         // Assert
         assertThat(menu.getDisplayed()).isTrue();

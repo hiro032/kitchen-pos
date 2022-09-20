@@ -31,10 +31,8 @@ public class MenuProducts {
     }
 
     public BigDecimal calcTotalPrice() {
-        BigDecimal totalPrice = BigDecimal.ZERO;
-        for (MenuProduct product : products) {
-            totalPrice = product.getPrice();
-        }
-        return totalPrice;
+        return products.stream()
+                .map(MenuProduct::getMenuProductPrice)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

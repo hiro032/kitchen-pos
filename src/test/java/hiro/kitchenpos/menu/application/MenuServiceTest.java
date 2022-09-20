@@ -160,7 +160,7 @@ class MenuServiceTest {
                 , BigDecimal.valueOf(10000)
                 , new InmemoryPurgomalumClient());
 
-        MenuProduct menuProduct = new MenuProduct(product, 1);
+        MenuProduct menuProduct = new MenuProduct(product.getId(), 1, product.getPrice().getPrice());
 
         Menu menu = new Menu("치킨", BigDecimal.valueOf(10000), menuGroup.getId(), Collections.singletonList(menuProduct));
 

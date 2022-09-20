@@ -20,7 +20,9 @@ class MenuProductsTest {
     @DisplayName("메뉴 제품 목록 생성")
     @Test
     void create_menu_products() {
-        MenuProduct menuProduct = new MenuProduct(new Product("치킨", BigDecimal.TEN, new InmemoryPurgomalumClient()), 3);
+        Product product = new Product("치킨", BigDecimal.TEN, new InmemoryPurgomalumClient());
+        MenuProduct menuProduct = new MenuProduct(product.getId(), 3, product.getPrice().getPrice());
+
         assertAll(
                 () -> assertDoesNotThrow(() -> new MenuProducts(List.of(menuProduct))),
                 () -> assertThat(new MenuProducts(List.of(menuProduct))).isInstanceOf(MenuProducts.class)

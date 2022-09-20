@@ -1,7 +1,6 @@
 package hiro.kitchenpos.menu.presentation.dtos;
 
 import hiro.kitchenpos.menu.application.dtos.MenuProductInfo;
-import hiro.kitchenpos.product.presentation.dtos.ProductResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,14 +12,14 @@ import java.util.UUID;
 @NoArgsConstructor
 public class MenuProductResponse {
 
-    private UUID id;
-    private ProductResponse productResponse;
+    private Long id;
+    private UUID productId;
     private int quantity;
 
     public static MenuProductResponse toInfo(MenuProductInfo menuProductInfo) {
         return new MenuProductResponse(
                 menuProductInfo.getId(),
-                ProductResponse.toInfo(menuProductInfo.getInfo()),
+                menuProductInfo.getProductId(),
                 menuProductInfo.getQuantity()
         );
     }

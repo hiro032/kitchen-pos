@@ -33,7 +33,6 @@ public class MenuService {
     private final ProductRepository productRepository;
 
     public CreateMenuInfo create(final CreateMenuCommand command) {
-
         validateMenuGroupId(command.getMenuGroupId());
         validateProductIds(command.getCreateMenuProductCommands());
         validateMenuPrice(command.getPrice(), command.getCreateMenuProductCommands());
@@ -43,10 +42,13 @@ public class MenuService {
                 command.getMenuGroupId(),
                 command.getCreateMenuProductCommands().stream()
                         .map(createMenuProductCommand -> new MenuProduct(
-                                productRepository.findById(
-                                createMenuProductCommand.getProductId()
-                                ).orElseThrow(ProductNotFoundException::new),
-                                createMenuProductCommand.getQuantity()))
+                                createMenuProductCommand.getProductId(),
+                                createMenuProductCommand.getQuantity(),
+                                productRepository.findById(createMenuProductCommand.getProductId())
+                                        .orElseThrow(ProductNotFoundException::new)
+                                        .getPrice().getPrice()
+                                )
+                        )
                         .collect(Collectors.toList()));
 
         Menu entity = menuRepository.save(menu);

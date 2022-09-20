@@ -47,27 +47,25 @@ public class Menu {
     }
 
     public boolean priceIsOverThanProductsPrice() {
-        BigDecimal productsPrice = menuProducts.calcTotalPrice();
-
-        return price.getPrice().compareTo(productsPrice) > 0;
+        return menuPriceOverThenProductsPrice();
     }
 
     public void display() {
         if(menuPriceOverThenProductsPrice()) {
             throw new MenuPriceOverThanProductsPriceException();
         }
-        this.displayed = Boolean.TRUE;
+        displayed = Boolean.TRUE;
     }
 
     public void unDisplay() {
-        this.displayed = Boolean.FALSE;
+        displayed = Boolean.FALSE;
     }
 
     public void changePrice(final BigDecimal changePrice) {
         if (changePriceIsOverThanProductsPrice(changePrice)) {
             unDisplay();
         }
-        this.price = new MenuPrice(changePrice);
+        price = new MenuPrice(changePrice);
     }
 
     private boolean changePriceIsOverThanProductsPrice(final BigDecimal changePrice) {

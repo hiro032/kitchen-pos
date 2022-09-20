@@ -5,13 +5,15 @@ import hiro.kitchenpos.menu.domain.MenuProduct;
 import hiro.kitchenpos.menu.presentation.dtos.ChangeMenuPriceRequest;
 import hiro.kitchenpos.menu.presentation.dtos.CreateMenuProductRequest;
 import hiro.kitchenpos.menu.presentation.dtos.CreateMenuRequest;
-import hiro.kitchenpos.product.domain.Product;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
 
 public class MenuFixtures {
+
+    private static final int DEFAULT_QUANTITY = 1;
+    private static final BigDecimal DEFAULT_PRICE = BigDecimal.valueOf(10000);
 
     public static CreateMenuRequest createMenuRequest(final UUID menuGroupId, final List<CreateMenuProductRequest> requests) {
         return new CreateMenuRequest("치킨 + 콜라", BigDecimal.valueOf(10000), menuGroupId, requests);
@@ -21,8 +23,16 @@ public class MenuFixtures {
         return new CreateMenuProductRequest(productId, quantity);
     }
 
-    public static MenuProduct menuProduct(final Product product) {
-        return new MenuProduct(product, 1);
+    public static MenuProduct menuProduct() {
+        return new MenuProduct(UUID.randomUUID(), DEFAULT_QUANTITY, DEFAULT_PRICE);
+    }
+
+    public static MenuProduct menuProduct(final BigDecimal price) {
+        return new MenuProduct(UUID.randomUUID(), DEFAULT_QUANTITY, price);
+    }
+
+    public static MenuProduct menuProduct(final UUID productId, final BigDecimal price) {
+        return new MenuProduct(productId, DEFAULT_QUANTITY, price);
     }
 
     public static ChangeMenuPriceRequest changeMenuPriceRequest(final BigDecimal changePrice) {
